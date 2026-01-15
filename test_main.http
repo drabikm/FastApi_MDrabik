@@ -1,0 +1,111 @@
+# Test your FastAPI endpoints
+# Get all movies
+GET http://127.0.0.1:8000/movies
+Accept: application/json
+
+###
+# Get 1 movie
+GET http://127.0.0.1:8000/movies/9
+Accept: application/json
+
+###
+# Try to access not existing resource
+GET http://127.0.0.1:8000/movies/1000
+Accept: application/json
+
+###
+# Add movie successfully
+POST http://127.0.0.1:8000/movies
+Content-Type: application/json
+
+{
+    "title":"LaLaLand",
+    "director": "Damien Chazelle",
+    "year":"2002",
+    "description":"People fall in love"
+}
+
+###
+# Don't add movie - missing data
+POST http://127.0.0.1:8000/movies
+Content-Type: application/json
+
+{
+    "title":"LaLaLand",
+    "director": "Damien Chazelle",
+    "year":"2002"
+}
+
+###
+PUT http://127.0.0.1:8000/movies/9
+Content-Type: application/json
+
+{
+    "title":"LaLaLand",
+    "director": "Damien Chazelle",
+    "year":"2002",
+    "description":"People fall in love in with a beautiful music"
+}
+
+###
+# Delete movie successfully
+DELETE http://127.0.0.1:8000/movies/9
+Accept: application/json
+
+###
+# Try to delete non-existing movie
+DELETE http://127.0.0.1:8000/movies/155
+Accept: application/json
+
+###
+# Delete many movies
+DELETE http://127.0.0.1:8000/movies
+Content-Type: application/json
+
+{
+  "ids_movies_to_delete": [9,10,11,12,13,14,15]
+}
+
+###
+# Get all actors
+GET http://127.0.0.1:8000/actors
+Accept: application/json
+
+###
+# Get 1 actor
+GET http://127.0.0.1:8000/actors/20
+Accept: application/json
+
+###
+# Try to access not existing resource
+GET http://127.0.0.1:8000/actors/1000
+Accept: application/json
+
+###
+# Add actor successfully
+POST http://127.0.0.1:8000/actors
+Content-Type: application/json
+
+{
+    "name":"Leonardo",
+    "surname": "DiCaprio"
+}
+
+###
+# Delete actor successfully
+DELETE http://127.0.0.1:8000/actors/20
+Accept: application/json
+
+###
+PUT http://127.0.0.1:8000/actors/8
+Content-Type: application/json
+
+{
+    "name":"Leonardo",
+    "surname": "DiCaprio"
+}
+
+###
+# Try to access not existing resource
+GET http://127.0.0.1:8000/movies/4/actors
+Accept: application/json
