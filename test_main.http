@@ -106,6 +106,6 @@ Content-Type: application/json
 }
 
 ###
-# Try to access not existing resource
+# Get actors for particular movie
 GET http://127.0.0.1:8000/movies/4/actors
 Accept: application/json

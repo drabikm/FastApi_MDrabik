@@ -120,11 +120,28 @@ def deleteMovie(actor_id:int):
 def update_movie(params: dict[str, Any], actor_id:int):
     db = sqlite3.connect('movies-extended.db')
     cursor = db.cursor()
-    movie = cursor.execute(f'SELECT * FROM actor where ID = {actor_id}').fetchone()
-    if not movie:
+    actor = cursor.execute(f'SELECT * FROM actor where ID = {actor_id}').fetchone()
+    if not actor:
         raise HTTPException(status_code=404, detail=f'Actor with id {actor_id} does not exist in database')
     name = params.get('name')
     surname = params.get('surname')
     cursor.execute(f"""UPDATE actor SET name='{name}', surname='{surname}' WHERE id='{actor_id}'""")
     db.commit()
     return {f"Actor edited successfully"}
+
+@app.get("/movies/{movie_id}/actors")
+def get_actors_for_movie(movie_id:int):
+    db = sqlite3.connect('movies-extended.db')
+    cursor = db.cursor()
+    movie = cursor.execute(f'SELECT * FROM movie where ID = {movie_id}').fetchone()
+    if not movie:
+        raise HTTPException(status_code=404, detail=f'Movie with id {movie_id} does not exist in database')
+    cursor.execute(f'SELECT actor.name, actor.surname FROM actor INNER JOIN movie_actor_through ON movie_actor_through.actor_id = actor.id where movie_actor_through.movie_id = {movie_id}')
+    actors = []
+    for row in cursor:
+        actor = {"Name": row[0], "Surname": row[1]}
+        actors.append(actor)
+    if not actors:
+        return f'There is no actor for movie with id {movie_id}'
+    else:
+        return {f"Actors {actors}"}
